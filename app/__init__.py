@@ -1,0 +1,64 @@
+from flask import Flask             #facilitate flask webserving
+from flask import render_template, request, redirect   #facilitate jinja templating
+from flask import session, url_for, make_response        #facilitate form submission
+import os
+import db
+
+app = Flask(__name__)    #create Flask object
+app.secret_key = os.urandom(32)
+db.setup()
+
+@app.route('/')
+def index():
+    if 'username' in session:
+        return redirect("/home")
+    return render_template('login.html') 
+
+@app.route('/login', methods = ['GET','POST'])
+def login():
+    #Check if it already exists in database and render home page if it does
+    #otherwise redirect to error page which will have a button linking to the login page
+    username = request.form.get('username')
+    password = request.form.get('password')
+    if db.verify_account(username,password):
+        session['username'] = username
+        session['password'] = password
+        return redirect("/home")
+    else:
+        resp = make_response(render_template('error.html',msg = "username or password is not correct"))
+        return resp
+
+@app.route('/create_account', methods=['GET', 'POST'])
+def create_account():
+    if request.method == 'POST':
+        userIn = request.form.get('username')
+        passIn = request.form.get('password')
+        #print(userIn)
+        #print(passIn)
+        if db.add_account(userIn, passIn) == -1:
+            return render_template("error.html", msg = f"account with username {userIn} already exists")
+        else:
+            return redirect("/")
+    return redirect(url_for('index'))
+
+@app.route('/logout')
+def logout():
+    # remove the username from the session if it's there
+    session.pop('username', None)
+    return redirect(url_for('index'))
+
+@app.route('/home')
+def home():
+    if 'username' not in session:
+        return redirect("/login")
+    username = session['username']
+    password = session['password']
+    if db.verify_account(username, password):
+        return render_template("home_page.html", username = username)
+
+if __name__ == "__main__": #false if this file imported as module
+    #enable debugging, auto-restarting of server when this file is modified
+    app.debug = True
+    app.run()
+
+
