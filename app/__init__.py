@@ -48,12 +48,18 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
 
-@app.route("/join/<int:user_id>")
-def join(user_id):
-    if user_id is None:
+@app.route("/redirect_join")
+def join_game():
+    return render_template("join_game.html")
+
+@app.route("/join_game", methods = ['post'])
+def join():
+    game_id = request.form.get('game_id')
+    if game_id is None:
         return render_template("error.html", msg = "Please enter a valid user id")
     else:
-                
+        x = db.get_gameid_content(game_id)
+        return render_template("user_input.html", game_id = game_id, contents = x)
 
 @app.route("/create")
 def create():
