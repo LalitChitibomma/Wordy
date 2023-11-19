@@ -1,7 +1,6 @@
 from rake_nltk import Rake
 from sentence_transformers import SentenceTransformer, util
-import nltk as nltk
-
+import nltk
 def compare(text, definition):
     nltk.download('stopwords')
     nltk.download('punkt')

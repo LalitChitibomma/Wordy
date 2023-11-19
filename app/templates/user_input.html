@@ -16,10 +16,14 @@ h1 {
 <body>
 <h1 align="center">Something</h1>
 <p align="center">TIMER</p>
+<<<<<<< HEAD
 {{game_id}}
 {{contents}}
 <div id="timer" align="center">
 </div>
+=======
+<div id="timer" align="center"></div>
+>>>>>>> 80bbaddd1e1f3455e8904d01a04b56ab2ba94dc6
 <script>
   let seconds = localStorage.getItem('timerSeconds') || 30;
   function startTimer() {
@@ -45,6 +49,7 @@ h1 {
     localStorage.setItem('timerSeconds', seconds);
   });
 </script>
+<<<<<<< HEAD
 
 
 <div style="text-align: center;">
@@ -55,5 +60,15 @@ h1 {
   </form>
 </div>
 
+=======
+<p></p>
+<div style="text-align: center;">
+  <form>
+    <textarea id="w3review" name="w3review" rows="10" cols="50"></textarea>
+    <br>
+    <input type="submit" value="Submit">
+  </form>
+</div>
+>>>>>>> 80bbaddd1e1f3455e8904d01a04b56ab2ba94dc6
 </body>
 </html>
