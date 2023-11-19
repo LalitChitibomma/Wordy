@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<h1 align="center">Something</h1>
+<div id="timer">
+</div>
+<script>
+  let seconds = 30;
+  function startTimer() {
+    const timerInterval = setInterval(function() {
+      seconds--;
+      if (seconds < 0) {
+        clearInterval(timerInterval);
+        document.getElementById("timer").innerHTML = "00:00";
+        alert("Timer finished!");
+      } else {
+        const formattedTime = pad(Math.floor(seconds / 60)) + ":" + pad(seconds % 60);
+        document.getElementById("timer").innerHTML = formattedTime;
+      }
+    }, 1000);
+  }
+  function pad(value) {
+    return value < 10 ? "0" + value : value;
+  }
+  // Start the timer immediately when the page loads
+  startTimer();
+</script>
+		<p></p>
+      <form>
+         Add your definitions:<br> <input type="text" name="name">
+         <br>
+      </form>
+</body>
+</html>
