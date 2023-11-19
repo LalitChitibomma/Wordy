@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+h1 { 
+  display: block;
+  font-size: 5em;
+  margin-top: 0.67em;
+  margin-bottom: 0.67em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+<h1 align="center">Something</h1>
+<p align="center">TIMER</p>
+<div id="timer" align="center">
+</div>
+<script>
+  let seconds = localStorage.getItem('timerSeconds') || 30;
+
+  function startTimer() {
+    const timerInterval = setInterval(function() {
+      seconds--;
+      if (seconds < 0) {
+        clearInterval(timerInterval);
+        document.getElementById("timer").innerHTML = "00:00";
+        alert("Timer finished!");
+      } else {
+        const formattedTime = pad(Math.floor(seconds / 60)) + ":" + pad(seconds % 60);
+        document.getElementById("timer").innerHTML = formattedTime;
+      }
+    }, 1000);
+  }
+
+  function pad(value) {
+    return value < 10 ? "0" + value : value;
+  }
+
+  // Start the timer immediately when the page loads
+  startTimer();
+
+  // Save the remaining seconds in localStorage when the page is unloaded
+  window.addEventListener('beforeunload', function() {
+    localStorage.setItem('timerSeconds', seconds);
+  });
+
+
+  
+</script>
+<p></p>
+<div style="text-align: center;">
+  <form >
+    Add your definitions:<br>
+    <input size = "50" type="text" name="name"><br><br>
+  </form>
+</div>
+</body>
+</html>
