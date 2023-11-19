@@ -53,9 +53,7 @@ def logout():
 def join(user_id):
     if user_id is None:
         return render_template("error.html", msg = "Please enter a valid user id")
-    else:
-                
-
+    
 @app.route("/create")
 def create():
     return render_template("create_game.html")
@@ -81,12 +79,12 @@ def home():
     password = session['password']
     if db.verify_account(username, password):
         return render_template("home_page.html", username = username)
-    
-@app.route('/result')
+
+@app.route('/submit', methods=['POST'])
 def result():
-    compare("a thing that is composed of two or more separate elements; a mixture.", 
-        "a process or set of rules to be followed in calculations or other problem-solving operations, especially by a computer.")
-    return render_template("result.html")
+    name = request.form['name']
+    data = compare("a thing that is composed of two or more separate elements; a mixture.", name)
+    return render_template("result.html", num=data[0])
 
 if __name__ == "__main__": #false if this file imported as module
     #enable debugging, auto-restarting of server when this file is modified
