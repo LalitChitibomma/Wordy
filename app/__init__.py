@@ -4,6 +4,7 @@ from flask import render_template, request, redirect   #facilitate jinja templat
 from flask import session, url_for, make_response        #facilitate form submission
 import os
 import db
+import random
 
 app = Flask(__name__)    #create Flask object
 app.secret_key = os.urandom(32)
@@ -13,7 +14,7 @@ db.setup()
 def index():
     if 'username' in session:
         return redirect("/home")
-    return render_template('login.html') 
+    return render_template('landing.html') 
 
 @app.route('/login', methods = ['GET','POST'])
 def login():
@@ -48,6 +49,30 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
 
+@app.route("/join/<int:user_id>")
+def join(user_id):
+    if user_id is None:
+        return render_template("error.html", msg = "Please enter a valid user id")
+    else:
+                
+
+@app.route("/create")
+def create():
+    return render_template("create_game.html")
+
+@app.route("/create_game", methods = ['POST'])
+def create_game():
+    terms_and_definitions = []
+    for i in range(1, 6):
+        term = request.form.get(f'term{i}')
+        definition = request.form.get(f'definition{i}')
+        terms_and_definitions.append({'term': term, 'definition': definition})
+    game_id = random.randint(100000,999999)
+    for item in terms_and_definitions:
+        db.add_game_content(game_id, item['term'], item['definition'])
+        #print(f"Term: {item['term']}, Definition: {item['definition']}")
+    return render_template("error.html", msg = f"The game id is {game_id}")
+
 @app.route('/home')
 def home():
     if 'username' not in session:
@@ -67,5 +92,3 @@ if __name__ == "__main__": #false if this file imported as module
     #enable debugging, auto-restarting of server when this file is modified
     app.debug = True
     app.run()
-
-
