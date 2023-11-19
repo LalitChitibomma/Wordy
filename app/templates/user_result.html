@@ -10,6 +10,7 @@
     
   </head>
 
+
   <body class="has-background-grey-lighter">
     <br><br />
     <br><br />
@@ -26,7 +27,7 @@
     </style>
 
     <p class="is-size-2 has-text-centered has-text-weight-bold">
-      Here are the most relevant/similar words between the phrases:
+      The most relevant words between the phrases are:
       {% for word in similar_words %}
       <br>
         <span class="highlight">{{ word }}</span>{% if not loop.last %}{% endif %}

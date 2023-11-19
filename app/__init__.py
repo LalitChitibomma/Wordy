@@ -64,6 +64,33 @@ def result(increment_id):
         return render_template("user_result.html", actual_term = term, actual = definition, user_input = user_input, similar_words = similar_words, similarity_score=similarity_score, increment_id =increment_id)
     else:
         return render_template("error.html", msg = "Invalid increment_id. Please provide a value between 0 and 5.")
+
+# def result(increment_id):
+#     if 0 <= increment_id <= 4:
+#         game_id = session.get('game_id')
+#         print(game_id)
+#         game_stuff = db.get_gameid_content(game_id)
+#         terms_and_definitions = [{'term': term, 'definition': definition} for _, term, definition in game_stuff]
+#         print(increment_id)
+#         term_data = terms_and_definitions[increment_id]
+#         term = term_data['term']
+#         definition = term_data['definition']
+#         user_input = request.args.get('user_input')
+#         data = compare(definition, user_input)
+#         similarity_score = str(data[0] * 100)[:5] + "%"
+#         keywords_definition = data[1] #list of words
+#         keywords_text = data[2] #list of words
+#         similar_words = []
+#         for x in keywords_text:
+#             for y in keywords_definition:
+#                 score = compare(x, y)[0]
+#                 if x in y or score > 0.6:
+#                     similar_words.append(y)
+#         similar_words = list(set(similar_words))
+#         common_keywords = set(map(str.lower, keywords_definition)).intersection(map(str.lower, keywords_text))
+#         return render_template("user_result.html", actual_term = term, actual = definition, user_input = user_input, similar_words = common_keywords, similarity_score=similarity_score, increment_id =increment_id)
+#     else:
+#         return render_template("error.html", msg = "Invalid increment_id. Please provide a value between 0 and 5.")
         
 
 @app.route('/increment_index/<int:increment_id>', methods=['GET'])

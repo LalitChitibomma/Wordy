@@ -10,11 +10,16 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
  </head>
 
+
   <body class="has-background-grey-lighter">
     <br><br />
-        <h2 class="is-size-1 has-text-centered has-text-weight-bold">Please create a wordlist: </h2>
-        <h2 class="is-size-3 has-text-centered has-text-weight-bold">enter 5 terms and 5 definitions </h2>
-        <br><br />
+
+    <article class="message is-success">
+        <div class="message-body">
+            <h2 class="is-size-1 has-text-centered has-text-weight-bold">Please create a wordlist: </h2>
+            <h2 class="is-size-1 has-text-centered has-text-weight-bold">enter 5 terms and 5 definitions </h2>
+        </div>
+      </article>
    <br>
 
     <form action="/create_game" method= "post">
@@ -24,12 +29,12 @@
             <div class="col">
                 <textarea style="width: 400px; height: 100px;" class="form-control" placeholder="Term" name="term{{ i }}"></textarea>
             </div>
-            <div class="col">
-                <textarea style="width: 600px; height: 150px;" class="form-control" placeholder="Definition" name="definition{{ i }}"></textarea>
-            </div>
-            <br>
+        <div class="col">
+            <textarea style="width: 600px; height: 150px;" class="form-control" placeholder="Definition" name="definition{{ i }}"></textarea>
+        </div>
+        </div>  
       {% endfor %}
-      <br><br /><br><br /><br><br /><br><br /><br><br /><br><br />
+      <br><br /><br><br /><br><br />
          <input type="submit" input class="button is-primary is-large is-center is-fullwidth" value="Create Wordlist" />
      </form>
      <br>
