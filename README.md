@@ -5,7 +5,7 @@ Wordy provides a gamified way for students to practice describing concepts and g
 
 `pip install flask`
 `pip install rake-nltk`
-`pip install -U sentence-transformers`
+`pip install -U sentence_transformers`
 
 ## Quickstart
 
