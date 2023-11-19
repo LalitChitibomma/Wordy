@@ -87,14 +87,17 @@ def join():
     else:
         x = db.get_gameid_content(game_id)
         session['game_id'] = game_id
-        return render_template("user_input.html", game_id = game_id, contents = x, increment_id=0)
+        terms_and_definitions = [{'term': term, 'definition': definition} for _, term, definition in x]
+        return render_template("user_input.html", game_id = game_id, term = terms_and_definitions[0]["term"], increment_id=0)
 
 @app.route('/user_description/<int:increment_id>', methods=['get'])
 def result(increment_id):
-    if 0 <= increment_id <= 4:
+    if 0 <= increment_id <= 5:
         game_id = session.get('game_id')
+        print(game_id)
         game_stuff = db.get_gameid_content(game_id)
         terms_and_definitions = [{'term': term, 'definition': definition} for _, term, definition in game_stuff]
+        print(increment_id)
         term_data = terms_and_definitions[increment_id]
         term = term_data['term']
         definition = term_data['definition']
@@ -108,6 +111,7 @@ def result(increment_id):
 
 @app.route('/increment_index/<int:increment_id>', methods=['GET'])
 def increment_index(increment_id):
+    print(increment_id)
     next_valid_increment_id = increment_id + 1
     game_id = session.get('game_id')
     game_stuff = db.get_gameid_content(game_id)
