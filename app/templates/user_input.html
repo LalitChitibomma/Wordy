@@ -21,29 +21,38 @@
 <div id="timer" align="center">
 </div>
 <script>
-  let seconds = localStorage.getItem('timerSeconds') || 30;
+  let seconds = 30;
+
   function startTimer() {
-    const timerInterval = setInterval(function() {
-      seconds--;
-      if (seconds < 0) {
-        clearInterval(timerInterval);
-        document.getElementById("timer").innerHTML = "00:00";
-        alert("Timer finished!");
-      } else {
-        const formattedTime = pad(Math.floor(seconds / 60)) + ":" + pad(seconds % 60);
-        document.getElementById("timer").innerHTML = formattedTime;
-      }
-    }, 1000);
-  }
+  const timerInterval = setInterval(function() {
+    seconds--;
+    if (seconds < 0) {
+      clearInterval(timerInterval);
+      document.getElementById("timer").innerHTML = "00:00";
+      // Redirect to a new page upon timer expiration
+      document.getElementById("timed_form").submit();
+    } else {
+      const formattedTime = pad(Math.floor(seconds / 60)) + ":" + pad(seconds % 60);
+      document.getElementById("timer").innerHTML = formattedTime;
+    }
+  }, 1000);
+}
+
   function pad(value) {
     return value < 10 ? "0" + value : value;
   }
-  // Start the timer immediately when the page loads
+
+  // // Start the timer immediately when the page loads
   startTimer();
-  // Save the remaining seconds in localStorage when the page is unloaded
+
+  // // Save the remaining seconds in localStorage when the page is unloaded
+  // window.addEventListener('beforeunload', function() {
+  //   localStorage.setItem('timerSeconds', seconds);
+  // });
   window.addEventListener('beforeunload', function() {
-    localStorage.setItem('timerSeconds', seconds);
-  });
+  // Ensure that the remaining seconds is non-negative before storing in localStorage
+  localStorage.setItem('timerSeconds', Math.max(0, seconds));
+});
 </script>
 
 <div style="text-align: center;">
@@ -52,7 +61,7 @@
     <input style="width: 400px; height: 100px;" type="text" name="user_input"><br><br>
     <input type="submit" input class="btn btn-outline-success" value="Submit" />
   </form> -->
-  <form action="{{ url_for('result', increment_id=increment_id) }}" method="get">
+  <form id="timed_form" action="{{ url_for('result', increment_id=increment_id) }}" method="get">
     <h4 class="is-size-3 has-text-centered has-text-weight-light">Describe the term in your own words:</h4><br>
     <input style="width: 400px; height: 100px;" type="text" name="user_input"><br><br>
     <br><br />

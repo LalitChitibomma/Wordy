@@ -13,8 +13,13 @@
   <p align="center">Actual Phrase/Term: {{actual_term}}</p>
   <p align="center">Actual Definition: {{actual}}</p>
   <p align="center">Your Description: {{user_input}}</p>
-  <p align="center">Here are the most relevant/similar words between the phrases: {{similar_words}}</p>
-  <p align="center">Your text is this {{similarity_score}} to the original text</p>
+  <p align="center">
+    Here are the most relevant/similar words between the phrases:
+    {% for word in similar_words %}
+      <br>{{ word }}
+    {% endfor %}
+  </p>
+  <p align="center">Your text is {{similarity_score}} similar to the original text! </p>
 
   <form action="{{ url_for('increment_index', increment_id=increment_id) }}" method="get">
     <input class="btn btn-outline-primary" type=submit value="Go to next">

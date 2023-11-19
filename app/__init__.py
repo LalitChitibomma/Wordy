@@ -92,7 +92,7 @@ def join():
 
 @app.route('/user_description/<int:increment_id>', methods=['get'])
 def result(increment_id):
-    if 0 <= increment_id <= 5:
+    if 0 <= increment_id <= 4:
         game_id = session.get('game_id')
         print(game_id)
         game_stuff = db.get_gameid_content(game_id)
@@ -103,11 +103,12 @@ def result(increment_id):
         definition = term_data['definition']
         user_input = request.args.get('user_input')
         data = compare(definition, user_input)
-        similarity_score = data[0]
+        similarity_score = str(data[0] * 100)[:5] + "%"
         similar_words = data[1] #list of words
         return render_template("user_result.html", actual_term = term, actual = definition, user_input = user_input, similar_words = similar_words, similarity_score=similarity_score, increment_id =increment_id)
     else:
         return render_template("error.html", msg = "Invalid increment_id. Please provide a value between 0 and 5.")
+        
 
 @app.route('/increment_index/<int:increment_id>', methods=['GET'])
 def increment_index(increment_id):
@@ -115,11 +116,11 @@ def increment_index(increment_id):
     next_valid_increment_id = increment_id + 1
     game_id = session.get('game_id')
     game_stuff = db.get_gameid_content(game_id)
-    terms_and_definitions = [{'term': term, 'definition': definition} for _, term, definition in game_stuff]
-    term_data = terms_and_definitions[increment_id]
-    term = term_data['term']
-    definition = term_data['definition']
     if 0 <= next_valid_increment_id <= 4:
+        terms_and_definitions = [{'term': term, 'definition': definition} for _, term, definition in game_stuff]
+        term_data = terms_and_definitions[next_valid_increment_id]
+        term = term_data['term']
+        definition = term_data['definition']
         return render_template('user_input.html', game_id = game_id, term=term,increment_id=next_valid_increment_id)
     else:
         return render_template("error.html", msg = "You are done!")
