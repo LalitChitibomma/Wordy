@@ -1,5 +1,5 @@
 # Wordy
-Wordly provides a gamified way for students to practice describing concepts and getting feedback on how well they did with AI and natural language processing. 
+Wordy provides a gamified way for students to practice describing concepts and getting feedback on how well they did with AI and natural language processing. 
 
 ## Installations
 
