@@ -12,42 +12,7 @@ db.setup()
 
 @app.route('/')
 def index():
-    if 'username' in session:
-        return redirect("/home")
     return render_template('landing.html') 
-
-@app.route('/login', methods = ['GET','POST'])
-def login():
-    #Check if it already exists in database and render home page if it does
-    #otherwise redirect to error page which will have a button linking to the login page
-    username = request.form.get('username')
-    password = request.form.get('password')
-    if db.verify_account(username,password):
-        session['username'] = username
-        session['password'] = password
-        return redirect("/home")
-    else:
-        resp = make_response(render_template('error.html',msg = "username or password is not correct"))
-        return resp
-
-@app.route('/create_account', methods=['GET', 'POST'])
-def create_account():
-    if request.method == 'POST':
-        userIn = request.form.get('username')
-        passIn = request.form.get('password')
-        #print(userIn)
-        #print(passIn)
-        if db.add_account(userIn, passIn) == -1:
-            return render_template("error.html", msg = f"account with username {userIn} already exists")
-        else:
-            return redirect("/")
-    return redirect(url_for('index'))
-
-@app.route('/logout')
-def logout():
-    # remove the username from the session if it's there
-    session.pop('username', None)
-    return redirect(url_for('index'))
 
 @app.route("/redirect_join")
 def join_game():
@@ -68,16 +33,7 @@ def create_game():
     for item in terms_and_definitions:
         db.add_game_content(game_id, item['term'], item['definition'])
         #print(f"Term: {item['term']}, Definition: {item['definition']}")
-    return render_template("error.html", msg = f"The game id is {game_id}")
-
-@app.route('/home')
-def home():
-    if 'username' not in session:
-        return redirect("/login")
-    username = session['username']
-    password = session['password']
-    if db.verify_account(username, password):
-        return render_template("home_page.html", username = username)
+    return render_template("game_id.html", msg = game_id)
 
 @app.route("/join_game", methods = ['get'])
 def join():
@@ -123,7 +79,7 @@ def increment_index(increment_id):
         definition = term_data['definition']
         return render_template('user_input.html', game_id = game_id, term=term,increment_id=next_valid_increment_id)
     else:
-        return render_template("error.html", msg = "You are done!")
+        return render_template("done.html", msg = "You are done!")
 
 if __name__ == "__main__": #false if this file imported as module
     #enable debugging, auto-restarting of server when this file is modified

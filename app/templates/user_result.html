@@ -16,12 +16,23 @@
     <p class="is-size-1 has-text-centered has-text-weight-bold">Actual Phrase/Term: {{actual_term}}</p>
     <br><br />
     <p class="is-size-3 has-text-centered has-text-weight-bold">Actual Definition: {{actual}}</p>
-    <p class="is-size-4 has-text-centered has-text-weight-bold">Your Description: {{user_input}}</p>
+    <p class="is-size-3 has-text-centered has-text-weight-bold">Your Description: {{user_input}}</p>
     <br><br />
-    <p class="is-size-3 has-text-centered has-text-weight-bold">Here are the most relevant/similar words between the phrases:
+    
+    <style>
+      .highlight {
+        background-color: yellow;
+      }
+    </style>
+
+    <p class="is-size-2 has-text-centered has-text-weight-bold">
+      Here are the most relevant/similar words between the phrases:
       {% for word in similar_words %}
-        <br>{{ word }}
-      {% endfor %}</p>
+      <br>
+        <span class="highlight">{{ word }}</span>{% if not loop.last %}{% endif %}
+      {% endfor %}
+    </p>
+
     <p class="is-size-3 has-text-centered has-text-weight-bold">Your text is {{similarity_score}} similar to the original text! </p>
     <br><br />
     <br><br />

@@ -12,14 +12,21 @@
         <br><br />
         <br><br />
         <br><br />
+        
 <h3 class="is-size-1 has-text-centered has-text-weight-bold">Describe {{term}}</h3>
 
-<p class="is-size-5 has-text-centered">The game id is {{game_id}}</p>
+<p class="is-size-2 has-text-centered has-text-weight-bold">The game id is {{game_id}}</p>
 <br><br />
 
-<p class="is-size-5 has-text-centered">TIMER</p>
-<div id="timer" align="center">
-</div>
+<p class="is-size-5 has-text-centered has-text-weight-bold">TIMER</p>
+<div id="timer" align="center"></div>
+<style>
+  #timer {
+    font-size: 4em; /* Increase the font size */
+    color: red; /* Change the text color to red */
+    text-shadow: 2px 2px 5px #000; /* Add a subtle text shadow */
+  }
+</style>
 <script>
   let seconds = 30;
 
@@ -56,14 +63,12 @@
 </script>
 
 <div style="text-align: center;">
-  <!-- <form action="user_description" method="get">
-    <h4>Describe the term in your own words:</h4><br>
-    <input style="width: 400px; height: 100px;" type="text" name="user_input"><br><br>
-    <input type="submit" input class="btn btn-outline-success" value="Submit" />
-  </form> -->
+ 
   <form id="timed_form" action="{{ url_for('result', increment_id=increment_id) }}" method="get">
-    <h4 class="is-size-3 has-text-centered has-text-weight-light">Describe the term in your own words:</h4><br>
-    <input style="width: 400px; height: 100px;" type="text" name="user_input"><br><br>
+    <h4 class="is-size-1 has-text-centered has-text-weight-semibold">Describe the term in your own words:</h4><br>
+    <!-- <input style="width: 400px; height: 100px;" type="text" name="user_input"><br><br> -->
+    <textarea rows="4" cols="50" wrap="soft" name="user_input">
+    </textarea>
     <br><br />
     <input type="submit" class="button is-primary is-large is-center is-fullwidth" value="Submit" />
     <br><br />
