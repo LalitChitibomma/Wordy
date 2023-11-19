@@ -89,6 +89,7 @@ def home():
     if db.verify_account(username, password):
         return render_template("home_page.html", username = username)
 
+<<<<<<< HEAD
 @app.route('/user_description', methods=['POST'])
 def result():
     game_id = session.get('game_id')
@@ -103,6 +104,13 @@ def result():
     print(user_input)
     data = compare("a thing that is composed of two or more separate elements; a mixture.", user_input)
     return render_template("user_result.html", num=data[0])
+=======
+@app.route('/submit', methods=['POST'])
+def result():
+    name = request.form['name']
+    data = compare("a thing that is composed of two or more separate elements; a mixture.", name)
+    return render_template("result.html", num=data[0])
+>>>>>>> 6f89f8a4498728d7531244c09f98a83c604cd14d
 
 if __name__ == "__main__": #false if this file imported as module
     #enable debugging, auto-restarting of server when this file is modified
