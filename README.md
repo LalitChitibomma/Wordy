@@ -1,5 +1,6 @@
 # MHacks
-installs:
 
-    - pip install rake-nltk
-    - pip install -U sentence-transformers
+## Installations
+
+`pip install rake-nltk`
+`pip install -U sentence-transformers`
