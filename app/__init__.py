@@ -53,16 +53,6 @@ def logout():
 def join_game():
     return render_template("join_game.html")
 
-@app.route("/join_game", methods = ['post'])
-def join():
-    game_id = request.form.get('game_id')
-    if game_id is None:
-        return render_template("error.html", msg = "Please enter a valid user id")
-    else:
-        x = db.get_gameid_content(game_id)
-        session['game_id'] = game_id
-        return render_template("user_input.html", game_id = game_id, contents = x)
-
 @app.route("/create")
 def create():
     return render_template("create_game.html")
@@ -89,23 +79,46 @@ def home():
     if db.verify_account(username, password):
         return render_template("home_page.html", username = username)
 
-@app.route('/user_description/<increment_id>', methods=['POST'])
+@app.route("/join_game", methods = ['get'])
+def join():
+    game_id = request.args.get('game_id')
+    if game_id is None:
+        return render_template("error.html", msg = "Please enter a valid user id")
+    else:
+        x = db.get_gameid_content(game_id)
+        session['game_id'] = game_id
+        return render_template("user_input.html", game_id = game_id, contents = x, increment_id=0)
+
+@app.route('/user_description/<int:increment_id>', methods=['get'])
 def result(increment_id):
+    if 0 <= increment_id <= 4:
+        game_id = session.get('game_id')
+        game_stuff = db.get_gameid_content(game_id)
+        terms_and_definitions = [{'term': term, 'definition': definition} for _, term, definition in game_stuff]
+        term_data = terms_and_definitions[increment_id]
+        term = term_data['term']
+        definition = term_data['definition']
+        user_input = request.args.get('user_input')
+        data = compare(definition, user_input)
+        similarity_score = data[0]
+        similar_words = data[1] #list of words
+        return render_template("user_result.html", actual_term = term, actual = definition, user_input = user_input, similar_words = similar_words, similarity_score=similarity_score, increment_id =increment_id)
+    else:
+        return render_template("error.html", msg = "Invalid increment_id. Please provide a value between 0 and 5.")
+
+@app.route('/increment_index/<int:increment_id>', methods=['GET'])
+def increment_index(increment_id):
+    next_valid_increment_id = increment_id + 1
     game_id = session.get('game_id')
     game_stuff = db.get_gameid_content(game_id)
-    
-    #print(game_id)
-    #print(game_stuff)
-    
     terms_and_definitions = [{'term': term, 'definition': definition} for _, term, definition in game_stuff]
-
-    user_input = request.form.get('user_input')
-    
-    
-    data = compare("a thing that is composed of two or more separate elements; a mixture.", user_input)
-    similarity_score = data[0]
-    similar_words = data[1] #list of words
-    return render_template("user_result.html", num=data[0])
+    term_data = terms_and_definitions[increment_id]
+    term = term_data['term']
+    definition = term_data['definition']
+    if 0 <= next_valid_increment_id <= 4:
+        return render_template('user_input.html', game_id = game_id, term=term,increment_id=next_valid_increment_id)
+    else:
+        return render_template("error.html", msg = "You are done!")
 
 if __name__ == "__main__": #false if this file imported as module
     #enable debugging, auto-restarting of server when this file is modified

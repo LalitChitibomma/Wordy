@@ -14,16 +14,14 @@ h1 {
 </style>
 </head>
 <body>
-<h1 align="center">Something</h1>
+<h3 align="center">Describe {{term}}</h3>
+
+<p>The game id is {{game_id}}</p>
+
+
 <p align="center">TIMER</p>
-<<<<<<< HEAD
-{{game_id}}
-{{contents}}
 <div id="timer" align="center">
 </div>
-=======
-<div id="timer" align="center"></div>
->>>>>>> 80bbaddd1e1f3455e8904d01a04b56ab2ba94dc6
 <script>
   let seconds = localStorage.getItem('timerSeconds') || 30;
   function startTimer() {
@@ -51,11 +49,16 @@ h1 {
 </script>
 
 <div style="text-align: center;">
-  <form action="user_description" method="post">
+  <!-- <form action="user_description" method="get">
     <h4>Describe the term in your own words:</h4><br>
     <input style="width: 400px; height: 100px;" type="text" name="user_input"><br><br>
     <input type="submit" input class="btn btn-outline-success" value="Submit" />
-  </form>
+  </form> -->
+  <form action="{{ url_for('result', increment_id=increment_id) }}" method="get">
+    <h4>Describe the term in your own words:</h4><br>
+    <input style="width: 400px; height: 100px;" type="text" name="user_input"><br><br>
+    <input type="submit" input class="btn btn-outline-success" value="Submit" />
+</form>
 </div>
 
 </body>
