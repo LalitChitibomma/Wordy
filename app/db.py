@@ -33,6 +33,9 @@ def add_account(username, password):
     else:
         return -1
 
+def add_game_content(gameid, term, deftn):
+    query("INSERT INTO game_info VALUES (?, ?, ?)", (gameid, term, deftn))
+   
 def check_username(username):
     accounts = get_table_contents("userInfo")
     for account in accounts:
@@ -49,11 +52,18 @@ def verify_account(username, password):
     return False
 
 def setup():
-    neighbors_header = ("(Username TEXT,Password TEXT)")
-    create_table("userInfo",neighbors_header)
+    user_header = ("(Username TEXT,Password TEXT)")
+    create_table("userInfo",user_header)
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
     c = db.cursor()
     c.close()
     db.commit()
+
+    game_table = ("(Game_id INTEGER, Words TEXT, Def TEXT)")
+    create_table("game_info",game_table)
+    db_2 = sqlite3.connect(DB_FILE, check_same_thread=False)
+    c_2 = db_2.cursor()
+    c_2.close()
+    db_2.commit()
     
    
