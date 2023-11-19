@@ -19,7 +19,8 @@ h1 {
 <div id="timer" align="center">
 </div>
 <script>
-  let seconds = 30;
+  let seconds = localStorage.getItem('timerSeconds') || 30;
+
   function startTimer() {
     const timerInterval = setInterval(function() {
       seconds--;
@@ -33,16 +34,34 @@ h1 {
       }
     }, 1000);
   }
+
   function pad(value) {
     return value < 10 ? "0" + value : value;
   }
+
   // Start the timer immediately when the page loads
   startTimer();
+
+  // Save the remaining seconds in localStorage when the page is unloaded
+  window.addEventListener('beforeunload', function() {
+    localStorage.setItem('timerSeconds', seconds);
+  });
+
+  // You may also want to clear the localStorage when the timer is finished
+  // or when you want to reset it manually.
+  function resetTimer() {
+    localStorage.removeItem('timerSeconds');
+    seconds = 30;
+    startTimer();
+  }
 </script>
-		<p></p>
-      <form>
-         Add your definitions:<br> <input type="text" name="name">
-         <br>
-      </form>
+<p></p>
+<form>
+   Add your definitions:<br> <input type="text" name="name">
+   <br>
+   <input type="submit" input class="btn btn-outline-danger" value="Submit" />
+   <br>
+   <button type="button" onclick="resetTimer()">Reset Timer</button>
+</form>
 </body>
 </html>
