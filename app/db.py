@@ -1,6 +1,5 @@
 import sqlite3
 import csv
-#import geo
 
 DB_FILE = "database.db"
 
@@ -36,6 +35,15 @@ def add_account(username, password):
 def add_game_content(gameid, term, deftn):
     query("INSERT INTO game_info VALUES (?, ?, ?)", (gameid, term, deftn))
    
+def get_gameid_content(id):
+    db = sqlite3.connect(DB_FILE, check_same_thread=False)
+    c = db.cursor()
+    temp = c.execute(f"SELECT * from game_info WHERE (Game_id = {id});")
+    info = temp.fetchall()
+    db.close()
+    return info
+
+
 def check_username(username):
     accounts = get_table_contents("userInfo")
     for account in accounts:
