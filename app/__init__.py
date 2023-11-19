@@ -60,6 +60,7 @@ def join():
         return render_template("error.html", msg = "Please enter a valid user id")
     else:
         x = db.get_gameid_content(game_id)
+        session['game_id'] = game_id
         return render_template("user_input.html", game_id = game_id, contents = x)
 
 @app.route("/create")
@@ -87,12 +88,21 @@ def home():
     password = session['password']
     if db.verify_account(username, password):
         return render_template("home_page.html", username = username)
-    
-@app.route('/result')
+
+@app.route('/user_description', methods=['POST'])
 def result():
-    compare("a thing that is composed of two or more separate elements; a mixture.", 
-        "a process or set of rules to be followed in calculations or other problem-solving operations, especially by a computer.")
-    return render_template("result.html")
+    game_id = session.get('game_id')
+    game_stuff = db.get_gameid_content(game_id)
+    
+    #print(game_id)
+    #print(game_stuff)
+    
+    terms_and_definitions = [{'term': term, 'definition': definition} for _, term, definition in game_stuff]
+
+    user_input = request.form.get('user_input')
+    print(user_input)
+    data = compare("a thing that is composed of two or more separate elements; a mixture.", user_input)
+    return render_template("user_result.html", num=data[0])
 
 if __name__ == "__main__": #false if this file imported as module
     #enable debugging, auto-restarting of server when this file is modified

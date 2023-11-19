@@ -73,5 +73,3 @@ def setup():
     c_2 = db_2.cursor()
     c_2.close()
     db_2.commit()
-    
-   
