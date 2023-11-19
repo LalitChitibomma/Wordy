@@ -1,3 +1,4 @@
+from Compare import compare
 from flask import Flask             #facilitate flask webserving
 from flask import render_template, request, redirect   #facilitate jinja templating
 from flask import session, url_for, make_response        #facilitate form submission
@@ -86,6 +87,12 @@ def home():
     password = session['password']
     if db.verify_account(username, password):
         return render_template("home_page.html", username = username)
+    
+@app.route('/result')
+def result():
+    compare("a thing that is composed of two or more separate elements; a mixture.", 
+        "a process or set of rules to be followed in calculations or other problem-solving operations, especially by a computer.")
+    return render_template("result.html")
 
 if __name__ == "__main__": #false if this file imported as module
     #enable debugging, auto-restarting of server when this file is modified
